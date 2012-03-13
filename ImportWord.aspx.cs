@@ -1,5 +1,5 @@
 ﻿// Import from Word document into ScrewTurn Wiki
-// Version 3
+// Version 4
 // http://chuchuva.com/software/screwturn-wiki-import-from-word/
 // License is open source: GNU and MIT.
 namespace ScrewTurn.Wiki
@@ -375,9 +375,6 @@ namespace ScrewTurn.Wiki
 
                 var sb = new StringBuilder();
                 string filename = fileUpload.FileName;
-                // Prepend our snippet tag. This can be modified using the admin panel for snippets.
-                sb.AppendLine("{s:Imported|" + filename + "}");
-                sb.AppendLine();
                 foreach (OpenXmlElement child in body.ChildElements)
                 {
                     if (child is Table)
@@ -440,7 +437,7 @@ namespace ScrewTurn.Wiki
                 // Note that the ModifyPage is the ABSOLUTE LAST THING that we do.
                 // If we fail at something above this, nothing about the existing page has been modified.
                 // Therefore we can safely exit without any harm, except until this point.
-                Pages.ModifyPage(page, pagetitle, username, DateTime.Now, "Imported from Word document",
+                Pages.ModifyPage(page, pagetitle, username, DateTime.Now, "Imported from " + filename,
                                  sb.ToString(), content.Keywords, content.Description, saveMode);
                 UrlTools.Redirect(UrlTools.BuildUrl(Tools.UrlEncode(page.FullName), Settings.PageExtension));
             }
